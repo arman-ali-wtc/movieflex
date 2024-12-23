@@ -1,41 +1,36 @@
-// App.tsx
 import React from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import MovieList from './components/MovieList';
-import Header from './components/Header'
+import Header from './components/Header';
 import Footer from './components/Footer';
-import Home from './components/Home';
 
-const AppLayout: React.FC = () => {
-  return <>
+const AppLayout: React.FC = () => (
+  <>
     <Header />
-    <Outlet />
+    <main className="m-4 lg:m-8 pt-[60px]">
+      <Outlet />
+    </main>
     <Footer />
   </>
-}
+);
 
-const router = createBrowserRouter([
+const routes = [
   {
     path: "/",
     element: <AppLayout />,
     children: [
       {
-        path:"/",
-        element: <Home />
+        index: true,
+        element: <MovieList />,
       },
       {
         path: "/:category",
         element: <MovieList />,
       },
-    ]
+    ],
   },
- 
-]);
+];
 
-const App: React.FC = () => {
-  return (
-      <RouterProvider router={router} />
-  );
-};
-
+const router = createBrowserRouter(routes);
+const App: React.FC = () => <RouterProvider router={router} />;
 export default App;
