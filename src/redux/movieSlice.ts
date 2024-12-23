@@ -4,8 +4,11 @@ import axios from 'axios';
 
 export const fetchMovies = createAsyncThunk(
   'movies/fetchMovies',
-  async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_API_KEY}`);
+  async (category: string) => {
+    const apiKey = process.env.REACT_APP_API_KEY;
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${category}?api_key=${apiKey}&language=en-US`
+    );
     return response.data.results;
   }
 );

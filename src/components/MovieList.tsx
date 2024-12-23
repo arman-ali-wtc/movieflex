@@ -1,11 +1,13 @@
+// components/MovieList.tsx
 import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMovies } from '../redux/movieSlice';
 import { RootState } from '../redux/store';
 import MovieCard from './MovieCard';
 
-const Home: React.FC = () => {
-  const category = 'popular';
+const MovieList: React.FC = () => {
+  const { category } = useParams();
   const dispatch = useDispatch();
 
   const { movies, status, error } = useSelector((state: RootState) => state.movies);
@@ -36,4 +38,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default MovieList;
