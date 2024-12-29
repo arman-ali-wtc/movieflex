@@ -15,7 +15,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="flex justify-between items-center px-8 py-4 bg-gray-900 text-white fixed top-0 w-full z-10">
+      <header className="flex justify-between items-center px-8 py-4 bg-gray-950 text-white fixed top-0 w-full z-10 shadow-lg shadow-slate-500/50">
         <NavLink to="/" className="text-2xl">
           MovieFlex
         </NavLink>
