@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, useLocation } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
+import Logo from '../assets/images/logo.png';
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -17,8 +18,8 @@ const Header: React.FC = () => {
   return (
     <>
       <header className="flex justify-between items-center px-8 py-4 bg-gray-950 text-white fixed top-0 w-full z-10 shadow-lg shadow-slate-500/50">
-        <NavLink to="/" className="text-2xl">
-          MovieFlex
+        <NavLink to="/" className="text-2xl -my-2">
+        <img src={Logo} alt='Logo' width={60} />
         </NavLink>
         <div className='flex gap-4 items-center'>
         <div className='lg:hidden'>
