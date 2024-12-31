@@ -6,9 +6,10 @@ import { AppDispatch, RootState } from '../redux/store';
 import Pagination from '@mui/material/Pagination';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import MovieSearch from './MovieSearch';
 import Movies from './Movies';
 
-const MovieList: React.FC = () => {
+const SearchList: React.FC = () => {
   const { category = 'now_playing' } = useParams<{ category?: string }>();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -16,12 +17,14 @@ const MovieList: React.FC = () => {
 
   const [lang, setLang] = useState('en-US');
   const [page, setPage] = useState(1);
+  const [searchValue, setSearchValue] = useState('');
 
   const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     setLang(newAlignment);
   };
 
   useEffect(() => {
+    setSearchValue('');
     dispatch(fetchMovies({ category, page, lang }));
   }, [category, page, lang, dispatch]);
 
@@ -31,14 +34,17 @@ const MovieList: React.FC = () => {
 
   return (
     <div className="movie-list">
-      <div className="flex justify-between items-center mb-4 gap-4">
-        <h1 className="min-w-fit capitalize lg:text-3xl italic font-bold">
-          {category.replace('_', ' ')} Movies
+      <div className="flex flex-wrap flex-row justify-between items-center mb-4 gap-4">
+        <h1 className="min-w-fit capitalize md:text-3xl italic font-bold md:order-1">
+          {searchValue ? `Results for : ${searchValue}` : `${category.replace('_', ' ')} Movies`}
         </h1>
-        <ToggleButtonGroup color="primary" value={lang}  className="font-sans text-sm lg:text-lg font-medium" exclusive onChange={handleChange} aria-label="Language">
+        <div className='md:order-3'>
+        <ToggleButtonGroup color="primary" value={lang}  className="font-sans text-sm md:text-lg font-medium" exclusive onChange={handleChange} aria-label="Language">
           <ToggleButton value="en-US" style={{padding: '4px 8px', textTransform: 'capitalize'}}>English</ToggleButton>
           <ToggleButton value="en-IN" style={{padding: '4px 8px', textTransform: 'capitalize'}}>Hindi</ToggleButton>
         </ToggleButtonGroup>
+        </div>
+        <MovieSearch setValue={setSearchValue} value={searchValue} />
       </div>
       <Movies movies={movies} status={status} error={error} />
       <div className="flex items-center justify-center pt-8">
@@ -48,4 +54,4 @@ const MovieList: React.FC = () => {
   );
 };
 
-export default MovieList;
+export default SearchList;

@@ -1,6 +1,7 @@
 import React from 'react';
 import Rating from '@mui/material/Rating';
 import { Link } from 'react-router-dom';
+import Skeleton from '@mui/material/Skeleton';
 
 interface MovieCardProps {
   image: string;
@@ -15,8 +16,9 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({ image, title, rating, popularity, releasedDate, language, movieId }) => {
   return (
     <Link to={`/movie/${movieId}`}>
-    <div className="bg-white rounded-lg shadow-md overflow-hidden w-[340px] shadow-md shadow-slate-300/50">
-      <img src={`https://image.tmdb.org/t/p/w500/${image}`} alt={title} loading='lazy' className="w-full h-auto object-cover" />
+    <div className="bg-white rounded-lg shadow-md overflow-hidden lg:w-[340px] shadow-md shadow-slate-300/50">
+      {image ? <img src={`https://image.tmdb.org/t/p/w500/${image}`} alt={title} loading='lazy' className="w-full h-auto object-cover" /> : <Skeleton variant="rounded" animation="wave" width={340} height={340} /> }
+      
       <div className="p-4 bg-gray-950">
         <h3 className="text-lg font-bold">{title}</h3>
         <div className='flex justify-between items-center my-3'>

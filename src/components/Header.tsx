@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import {createPortal} from 'react-dom';
-import { NavLink } from 'react-router-dom';
-
+import { createPortal } from 'react-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import SearchIcon from '@mui/icons-material/Search';
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -19,6 +20,12 @@ const Header: React.FC = () => {
         <NavLink to="/" className="text-2xl">
           MovieFlex
         </NavLink>
+        <div className='flex gap-4 items-center'>
+        <div className='lg:hidden'>
+        {!location?.pathname?.includes('search') && (<NavLink to="/search">
+                <SearchIcon />
+        </NavLink>)}
+        </div>
         <button
           onClick={toggleMenu}
           className="lg:hidden text-white focus:outline-none"
@@ -38,7 +45,13 @@ const Header: React.FC = () => {
             />
           </svg>
         </button>
-        <nav className="hidden lg:block">
+        </div>
+       
+        <nav className="hidden lg:flex gap-4">
+          {!location?.pathname?.includes('search') && (<NavLink to="/search">
+            <SearchIcon />
+          </NavLink>)}
+
           <ul className="flex space-x-4">
             <li>
               <NavLink
@@ -100,7 +113,7 @@ const Header: React.FC = () => {
           >
             <div
               className="bg-gray-900 text-white w-full p-4 rounded-t-lg z-20"
-              onClick={(e) => e.stopPropagation()} // Prevent click from closing the menu
+              onClick={(e) => e.stopPropagation()}
             >
               <ul className="space-y-4 text-center">
                 <li>

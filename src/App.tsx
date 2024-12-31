@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { MovieDetails } from './components/MovieDetails';
+import SearchList from './components/SearchList';
 
 const AppLayout: React.FC = () => {
   const darkTheme = createTheme({
@@ -44,6 +45,10 @@ const routes = [
       {
         path:"/movie/:id",
         element: <MovieDetails />
+      },
+      {
+        path:"/search",
+        element: <SearchList />
       }
     ],
   },
