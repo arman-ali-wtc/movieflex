@@ -16,17 +16,18 @@ const MovieList: React.FC = () => {
   const { movies, status, error } = useSelector((state: RootState) => state.movies);
 
   const [lang, setLang] = useState('en-US');
+  const [page, setPage] = useState(1);
 
-  const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => setLang(newAlignment)
+  const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
+    setLang(newAlignment)
+  } 
 
   useEffect(() => {
-    if (category) {
-      dispatch(fetchMovies({ category, page: 1 }));
-    }
-  }, [category, dispatch]);
+    dispatch(fetchMovies({ category, page, lang }));
+  }, [category, page, lang, dispatch]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
-    dispatch(fetchMovies({ category, page }));
+    setPage(page)
   };
   if (status === 'loading') {
     return (
@@ -65,11 +66,12 @@ const MovieList: React.FC = () => {
             popularity={movie.popularity}
             releasedDate={movie.release_date}
             language={movie.original_language}
+            movieId={movie.id}
           />
         ))) : <h1>No Movies Found</h1>}
       </div>
       <div className='flex items-center justify-center pt-8'>
-        <Pagination  page={movies.page} count={movies.totalPage} variant="outlined" color="primary" onChange={handlePageChange} />
+        <Pagination  page={page} count={movies.totalPage} variant="outlined" color="primary" onChange={handlePageChange} />
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import MovieList from './components/MovieList';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { MovieDetails } from './components/MovieDetails';
 
 const AppLayout: React.FC = () => {
   const darkTheme = createTheme({
@@ -40,6 +41,10 @@ const routes = [
         path: "/:category",
         element: <MovieList />,
       },
+      {
+        path:"/movie/:id",
+        element: <MovieDetails />
+      }
     ],
   },
 ];

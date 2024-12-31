@@ -1,5 +1,6 @@
 import React from 'react';
 import Rating from '@mui/material/Rating';
+import { Link } from 'react-router-dom';
 
 interface MovieCardProps {
   image: string;
@@ -8,10 +9,12 @@ interface MovieCardProps {
   popularity: number;
   releasedDate: string;
   language: string;
+  movieId: number;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ image, title, rating, popularity, releasedDate, language }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ image, title, rating, popularity, releasedDate, language, movieId }) => {
   return (
+    <Link to={`/movie/${movieId}`}>
     <div className="bg-white rounded-lg shadow-md overflow-hidden w-[340px] shadow-md shadow-slate-300/50">
       <img src={`https://image.tmdb.org/t/p/w500/${image}`} alt={title} loading='lazy' className="w-full h-auto object-cover" />
       <div className="p-4 bg-gray-950">
@@ -26,6 +29,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ image, title, rating, popularity,
         </div>
       </div>
     </div>
+    </Link>
   );
 };
 

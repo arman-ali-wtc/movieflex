@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const fetchMovies = createAsyncThunk(
   'movies/fetchMovies',
-  async ({ category, page }: { category: string; page: number }, { getState, rejectWithValue }) => {
+  async ({ category, page, lang }: { category: string; page: number; lang: string }, { getState, rejectWithValue }) => {
     const state: any = getState();
     const cachedMovies = state.movies[category]?.[page];
     if (cachedMovies) {
@@ -12,7 +12,7 @@ export const fetchMovies = createAsyncThunk(
     try {
       const apiKey = process.env.REACT_APP_API_KEY;
       const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/${category}?api_key=${apiKey}&language=en-US&page=${page}`
+        `https://api.themoviedb.org/3/movie/${category}?api_key=${apiKey}&language=${lang}&page=${page}`
       );
       return { category, page: response.data.page, data: response.data };
     } catch (error: any) {
@@ -21,8 +21,24 @@ export const fetchMovies = createAsyncThunk(
   }
 );
 
+export const fetchMovieById = createAsyncThunk(
+  'movies/fetchMovieById',
+  async ({ id }: { id: number }, { rejectWithValue }) => {
+    try {
+      const apiKey = process.env.REACT_APP_API_KEY;
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || 'An error occurred');
+    }
+  }
+);
+
 interface MovieState {
   movies: MovieObject;
+  selectedMovie: any | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
@@ -41,6 +57,7 @@ const initialState: MovieState = {
     totalPage: 0,
     totalResults: 0
   },
+  selectedMovie: null,
   status: 'idle',
   error: null
 };
@@ -61,9 +78,20 @@ const movieSlice = createSlice({
           results: action.payload.data.results,
           totalPage: action.payload.data.total_pages,
           totalResults: action.payload.data.total_results
-        }
+        };
       })
       .addCase(fetchMovies.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message || null;
+      })
+      .addCase(fetchMovieById.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchMovieById.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.selectedMovie = action.payload;
+      })
+      .addCase(fetchMovieById.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || null;
       });
