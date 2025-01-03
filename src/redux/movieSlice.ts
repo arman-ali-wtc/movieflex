@@ -1,6 +1,26 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+export const fetchMovieDetailsAndVideos = createAsyncThunk(
+  'movies/fetchMovieDetailsAndVideos',
+  async ({ id }: { id: number }, { rejectWithValue }) => {
+    try {
+      const apiKey = process.env.REACT_APP_API_KEY;
+      const [movieResponse, videoResponse] = await Promise.all([
+        axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`),
+        axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`)
+      ]);
+
+      return {
+        movie: movieResponse.data,
+        videos: videoResponse.data.results.length > 0 ? videoResponse.data : null
+      };
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || 'An error occurred');
+    }
+  }
+);
+
 export const fetchMovies = createAsyncThunk(
   'movies/fetchMovies',
   async ({ category, page, lang }: { category: string; page: number; lang: string }, { getState, rejectWithValue }) => {
@@ -21,22 +41,6 @@ export const fetchMovies = createAsyncThunk(
   }
 );
 
-export const fetchMovieById = createAsyncThunk(
-  'movies/fetchMovieById',
-  async ({ id }: { id: number }, { rejectWithValue }) => {
-    try {
-      const apiKey = process.env.REACT_APP_API_KEY;
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`
-      );
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || 'An error occurred');
-    }
-  }
-);
-
-
 export const searchMovie = createAsyncThunk(
   'movies/searchMovie',
   async ({ query }: { query: string }, { rejectWithValue }) => {
@@ -45,7 +49,7 @@ export const searchMovie = createAsyncThunk(
       const response = await axios.get(
         `https://api.themoviedb.org/3/search/movie?query=${query}&api_key=${apiKey}`
       );
-      return response;
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || 'An error occurred');
     }
@@ -55,6 +59,7 @@ export const searchMovie = createAsyncThunk(
 interface MovieState {
   movies: MovieObject;
   selectedMovie: any | null;
+  selectedVideo: any | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
@@ -74,6 +79,7 @@ const initialState: MovieState = {
     totalResults: 0
   },
   selectedMovie: null,
+  selectedVideo: null,
   status: 'idle',
   error: null
 };
@@ -100,14 +106,15 @@ const movieSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message || null;
       })
-      .addCase(fetchMovieById.pending, (state) => {
+      .addCase(fetchMovieDetailsAndVideos.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchMovieById.fulfilled, (state, action) => {
+      .addCase(fetchMovieDetailsAndVideos.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.selectedMovie = action.payload;
+        state.selectedMovie = action.payload.movie;
+        state.selectedVideo = action.payload.videos;
       })
-      .addCase(fetchMovieById.rejected, (state, action) => {
+      .addCase(fetchMovieDetailsAndVideos.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || null;
       })
@@ -117,10 +124,10 @@ const movieSlice = createSlice({
       .addCase(searchMovie.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.movies = {
-          page: action.payload.data.page,
-          results: action.payload.data.results,
-          totalPage: action.payload.data.total_pages,
-          totalResults: action.payload.data.total_results
+          page: action.payload.page,
+          results: action.payload.results,
+          totalPage: action.payload.total_pages,
+          totalResults: action.payload.total_results
         };
       })
       .addCase(searchMovie.rejected, (state, action) => {

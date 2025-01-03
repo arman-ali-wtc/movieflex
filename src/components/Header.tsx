@@ -144,6 +144,18 @@ const Header: React.FC = () => {
                   </NavLink>
                 </li>
                 <li>
+              <NavLink
+                to="/now_playing"
+                className={({ isActive }) =>
+                  isActive
+                    ? 'text-green-500 font-bold'
+                    : 'text-white hover:text-green-400'
+                }
+              >
+                Now Playing
+              </NavLink>
+            </li>
+                <li>
                   <NavLink
                     to="/top_rated"
                     onClick={closeMenu}
