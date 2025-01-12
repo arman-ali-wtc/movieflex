@@ -16,7 +16,7 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({ image, title, rating, popularity, releasedDate, language, movieId }) => {
   return (
     <Link to={`/movie/${movieId}`}>
-    <div className="bg-white rounded-lg shadow-md overflow-hidden lg:w-[340px] shadow-md shadow-slate-300/50">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden lg:w-[260px]  card-movie shadow-md shadow-slate-300/50">
       {image ? <img src={`https://image.tmdb.org/t/p/w500/${image}`} alt={title} loading='lazy' className="w-full h-auto object-cover" /> : <Skeleton variant="rounded" animation="wave" width={340} height={340} /> }
       
       <div className="p-4 bg-gray-950">

@@ -5,3 +5,43 @@
 body {
     color: white;
 }
+
+
+.card-movie {
+    border: 1px solid transparent;
+}
+.card-movie:hover {
+    animation: borderAnimation 2s linear infinite;
+}
+
+@keyframes borderAnimation {
+    0% {
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+    }
+    14% {
+      border-top-color: violet;
+    }
+    28% {
+      border-right-color: indigo;
+    }
+    42% {
+      border-bottom-color: blue;
+    }
+    57% {
+      border-left-color: green;
+    }
+    71% {
+      border-top-color: yellow;
+    }
+    85% {
+      border-right-color: orange;
+    }
+    100% {
+      border-bottom-color: red;
+    }
+  }
+  
+  

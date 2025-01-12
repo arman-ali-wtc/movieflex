@@ -43,7 +43,7 @@ const Movies: React.FC<Movies> = ({ movies, status, error }) => {
     }
 
     return (
-        <div className="flex flex-wrap gap-5 justify-between">
+        <div className="flex flex-wrap gap-8 justify-between">
             {movies.results.map((movie) => (
                 <MovieCard
                     key={movie.id}
