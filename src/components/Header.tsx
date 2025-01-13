@@ -19,41 +19,53 @@ const Header: React.FC = () => {
     <>
       <header className="flex justify-between items-center px-8 py-4 bg-gray-950 text-white fixed top-0 w-full z-10 shadow-lg shadow-slate-500/50">
         <NavLink to="/" className="text-2xl -my-2">
-        <img src={Logo} alt='Logo' width={60} />
+          <img src={Logo} alt='Logo' width={60} />
         </NavLink>
         <div className='flex gap-4 items-center'>
-        <div className='lg:hidden'>
-        {!location?.pathname?.includes('search') && (<NavLink to="/search">
-                <SearchIcon />
-        </NavLink>)}
-        </div>
-        <button
-          onClick={toggleMenu}
-          className="lg:hidden text-white focus:outline-none"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+          <div className='lg:hidden'>
+            {!location?.pathname?.includes('search') && (<NavLink to="/search">
+              <SearchIcon />
+            </NavLink>)}
+          </div>
+          <button
+            onClick={toggleMenu}
+            className="lg:hidden text-white focus:outline-none"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
         </div>
-       
+
         <nav className="hidden lg:flex gap-4">
           {!location?.pathname?.includes('search') && (<NavLink to="/search">
             <SearchIcon />
           </NavLink>)}
 
           <ul className="flex space-x-4">
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive
+                    ? 'text-green-500 font-bold'
+                    : 'text-white hover:text-green-400'
+                }
+              >
+                Home
+              </NavLink>
+            </li>
             <li>
               <NavLink
                 to="/popular"
@@ -102,6 +114,19 @@ const Header: React.FC = () => {
                 Top Rated Movies
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/adults"
+                className={({ isActive }) =>
+                  isActive
+                    ? 'text-green-500 font-bold'
+                    : 'text-white hover:text-green-400'
+                }
+              >
+                Adult (18+)
+              </NavLink>
+
+            </li>
           </ul>
         </nav>
       </header>
@@ -117,6 +142,18 @@ const Header: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <ul className="space-y-4 text-center">
+                <li>
+                  <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                      isActive
+                        ? 'text-green-500 font-bold'
+                        : 'text-white hover:text-green-400'
+                    }
+                  >
+                    Home
+                  </NavLink>
+                </li>
                 <li>
                   <NavLink
                     to="/popular"
@@ -144,17 +181,17 @@ const Header: React.FC = () => {
                   </NavLink>
                 </li>
                 <li>
-              <NavLink
-                to="/now_playing"
-                className={({ isActive }) =>
-                  isActive
-                    ? 'text-green-500 font-bold'
-                    : 'text-white hover:text-green-400'
-                }
-              >
-                Now Playing
-              </NavLink>
-            </li>
+                  <NavLink
+                    to="/now_playing"
+                    className={({ isActive }) =>
+                      isActive
+                        ? 'text-green-500 font-bold'
+                        : 'text-white hover:text-green-400'
+                    }
+                  >
+                    Now Playing
+                  </NavLink>
+                </li>
                 <li>
                   <NavLink
                     to="/top_rated"
@@ -166,6 +203,18 @@ const Header: React.FC = () => {
                     }
                   >
                     Top Rated Movies
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/adults"
+                    className={({ isActive }) =>
+                      isActive
+                        ? 'text-green-500 font-bold'
+                        : 'text-white hover:text-green-400'
+                    }
+                  >
+                    Adult (18+)
                   </NavLink>
                 </li>
               </ul>

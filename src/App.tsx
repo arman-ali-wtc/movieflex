@@ -43,11 +43,15 @@ const routes = [
         element: <MovieList />,
       },
       {
-        path:"/movie/:id",
+        path: "/adults",
+        element: <MovieList />,
+      },
+      {
+        path: "/movie/:id",
         element: <MovieDetails />
       },
       {
-        path:"/search",
+        path: "/search",
         element: <SearchList />
       }
     ],

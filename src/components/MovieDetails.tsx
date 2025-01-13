@@ -4,9 +4,11 @@ import { useParams } from 'react-router-dom';
 import { fetchMovieDetailsAndVideos } from '../redux/movieSlice';
 import { AppDispatch, RootState } from '../redux/store';
 import { Skeleton } from '@mui/material';
+import { useMediaQuery } from 'react-responsive';
 
 export const MovieDetails = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const isDesktop = useMediaQuery({ minWidth: 992 });
     const { id } = useParams();
 
     const { selectedMovie, selectedVideo, status, error } = useSelector((state: RootState) => state.movies);
@@ -40,15 +42,17 @@ export const MovieDetails = () => {
             </div>
             {selectedVideo && selectedVideo.results.length > 0 && (
                 <>
-                    <iframe
-                        width="380"
-                        draggable="true"
-                        className='hidden lg:block absolute right-0 top-0 rounded-bl-lg bg-transparent'
-                        height="220"
-                        src={`https://www.youtube.com/embed/${selectedVideo.results[0].key}?controls=0&autoplay=1&mute=0&rel=0&showinfo=0`}
-                        allow="autoplay; encrypted-media"
-                        allowFullScreen>
-                    </iframe>
+                    {isDesktop && (
+                        <iframe
+                            width="380"
+                            draggable="true"
+                            className='absolute right-0 top-0 rounded-bl-lg bg-transparent'
+                            height="220"
+                            src={`https://www.youtube.com/embed/${selectedVideo.results[0].key}?controls=0&autoplay=1&mute=0&rel=0&showinfo=0`}
+                            allow="autoplay; encrypted-media"
+                            allowFullScreen>
+                        </iframe>
+                    )}
 
                     <iframe
                         className="w-full h-[360px] lg:h-[700px] mt-4"
